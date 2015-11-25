@@ -35,6 +35,7 @@ public class CSVReader : SingletonBehaviour<CSVReader>
 			for (int j = 0; j < parts.Length; ++j) {
 				//Do something in here with the loop. It loops through everything
 				//That is saved in the CSV.
+				Debug.Log ("Line: " + i + " Part: " + j + " Says " + parts [j]);
 			}
 			
 		}
@@ -49,7 +50,15 @@ public class CSVReader : SingletonBehaviour<CSVReader>
 		
 		//This is the writer, it writes to the filepath
 		StreamWriter writer = new StreamWriter (filePath);
+		
+		//This writes in a for loop.
+		for (int i = 0; i < 10; ++i) {
+			writer.WriteLine ("Hello" + "," + "This" + "," + "is" + "," + "Line" + (i + 1));
+		}
+		
+		//This is just an example out of the for loop
 		writer.WriteLine ("Hello" + "," + "Something" + "," + "AnotherVariable");
+		
 		writer.Flush ();
 		//This closes the file
 		writer.Close ();
@@ -59,7 +68,7 @@ public class CSVReader : SingletonBehaviour<CSVReader>
 	private string getPath ()
 	{
 		#if UNITY_EDITOR
-		return Application.dataPath + "/CSV/" + "CSVFile.csv";
+		return Application.dataPath + "/CSVReadWrite" + "/CSV/" + "CSVFile.csv";
 		#elif UNITY_ANDROID
 		return Application.persistentDataPath+"CSVFile.csv";
 		#elif UNITY_IPHONE

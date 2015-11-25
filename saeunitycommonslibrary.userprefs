@@ -1,8 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/CSVReadWrite/Scripts/CSVReader.cs">
     <Files>
-      <File FileName="Assets/CSVReadWrite/Scripts/CSVReader.cs" Line="62" Column="19" />
+      <File FileName="../../GitHub/GAM111_Game4/Assets/Scripts/FSM/FSM.cs" Line="1" Column="1" />
+      <File FileName="../../GitHub/GAM111_Game4/Assets/Scripts/FSM/FSMState.cs" Line="1" Column="1" />
+      <File FileName="Assets/CSVReadWrite/Scripts/CSVReader.cs" Line="38" Column="33" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
