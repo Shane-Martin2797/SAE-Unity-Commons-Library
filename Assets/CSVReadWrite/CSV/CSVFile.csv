@@ -1,0 +1,7 @@
+Type,Name,Damage/Armor,AttackSpeed,CritChance,CritDamage
+SomeType,Perfect,100.00,100.00,100.00,100.00
+SomeType,Swrd,1.00,1000.00,100.00,10.00
+SomeType,Axe,1000.00,1.00,10.00,100.00
+SomeType,Ix,10000.00,100.00,0.00,0.00
+SomeType,Murder,10000.00,10000.00,10000.00,10000.00
+SomeType,Copy,1.00,1.00,100000.00,100000.00
