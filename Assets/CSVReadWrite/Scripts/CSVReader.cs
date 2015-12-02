@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 
-public class CSVReader : SingletonBehaviour<CSVReader>
+public class CSVReader : SingletonBehaviourII<CSVReader>
 {
 
 	//This is the file we are writing to/reading from
