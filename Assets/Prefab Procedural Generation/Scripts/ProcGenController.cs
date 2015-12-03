@@ -36,15 +36,54 @@ public class ProcGenController : MonoBehaviour
     private int currentSectionIndex;
     private int previousSectionIndex;
 
+    /// <summary>
+    /// Used to set up arrays and perform checks before procedural generation occurs
+    /// </summary>
+    private void InitialiseGenerator ()
+    {
+        //Checks if there are any sections within the list, if not, it logs an error.
+        if (listOfSections.Count <= 0)
+        {
+            Debug.LogError("No sections in the Procedural Generation section-list!");
+        }
 
+        //Checks if hasTarget is true, if so, checks if targetGameObject is null. If it is, it resets hasTarget to false.
+        if (hasTarget && (targetGameObject == null))
+        {
+            hasTarget = false;
+            Debug.LogWarning("hasTarget is true; however, Procedural Generation's target object is null. Setting hasTarget to false.");
+        }
 
-	// Use this for initialization
-	void Start () {
+        if (hasEndOfGeneration)
+        {
+            if (numSectionsToSpawn <= 0)
+            {
+                hasEndOfGeneration = false;
+                Debug.LogWarning("hasEndOfGeneration is true; however, Procedural Generation's numSectionsToSpawn <= 0. Setting hasEndOfGeneration to false.");
+            }
+            else
+            {
+                if (finalSection == null)
+                {
+                    Debug.LogWarning("No finalSection specified, dynamically allocating. (unless random, then first section chosen)");
+                    finalSection = listOfSections[CalculateFinalSection()];
+                }
+            }
+        }
+    }
 	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+    /// <summary>
+    /// Returns the index of the final section if one was not selected.
+    /// </summary>
+	private int CalculateFinalSection () 
+    {
+        if (generatesInOrder)
+        {
+            return numSectionsToSpawn % listOfSections.Count;
+        }
+        else
+        {
+            return 0;
+        }
 	}
 }
