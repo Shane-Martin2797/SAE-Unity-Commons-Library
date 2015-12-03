@@ -74,6 +74,7 @@
 -define:UNITY_EDITOR
 -define:UNITY_EDITOR_64
 -define:UNITY_EDITOR_OSX
+'Assets/AStarPathfinding/AStarPathfinding.cs'
 'Assets/CSVReadWrite/Scripts/CSVReader.cs'
 'Assets/FiniteStateMachine/Scripts/FSM.cs'
 'Assets/FiniteStateMachine/Scripts/FSMState.cs'
@@ -84,6 +85,6 @@
 'Assets/Pooling/Scripts/PoolingTypeII.cs'
 'Assets/Prefab Procedural Generation/Scripts/ProcGenController.cs'
 'Assets/Singletons/Scripts/SingletonBehaviour.cs'
-'Assets/Singletons/Scripts/SingletonBehaviour1.cs'
+'Assets/Singletons/Scripts/SingletonBehaviourII.cs'
 -r:'/Applications/Unity/Unity.app/Contents/Frameworks/Mono/lib/mono/unity/System.Runtime.Serialization.dll'
 -r:'/Applications/Unity/Unity.app/Contents/Frameworks/Mono/lib/mono/unity/System.Xml.Linq.dll'

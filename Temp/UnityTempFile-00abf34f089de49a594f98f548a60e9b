@@ -74,6 +74,7 @@
 -define:UNITY_EDITOR
 -define:UNITY_EDITOR_64
 -define:UNITY_EDITOR_OSX
+'Assets/AStarPathfinding/AStarPathfinding.cs'
 'Assets/CSVReadWrite/Scripts/CSVReader.cs'
 'Assets/FiniteStateMachine/Scripts/FSM.cs'
 'Assets/FiniteStateMachine/Scripts/FSMState.cs'

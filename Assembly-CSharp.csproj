@@ -45,6 +45,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\AStarPathfinding\AStarPathfinding.cs" />
      <Compile Include="Assets\CSVReadWrite\Scripts\CSVReader.cs" />
      <Compile Include="Assets\FiniteStateMachine\Scripts\FSM.cs" />
      <Compile Include="Assets\FiniteStateMachine\Scripts\FSMState.cs" />
