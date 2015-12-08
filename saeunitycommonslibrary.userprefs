@@ -1,10 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="../../GitHub/GAM111.2/Assets/Scripts/Player/AStarPrep.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Prefab Procedural Generation/Scripts/ProcGenController.cs">
     <Files>
-      <File FileName="Assets/AStarPathfinding/AStarPrep.cs" Line="1" Column="1" />
-      <File FileName="../../GitHub/GAM111.2/Assets/Scripts/Player/AStarPrep.cs" Line="7" Column="1" />
-      <File FileName="Assets/CSVReadWrite/Scripts/CSVReader.cs" Line="1" Column="1" />
+      <File FileName="Assets/Prefab Procedural Generation/Scripts/ProcGenController.cs" Line="129" Column="95" />
+      <File FileName="Assets/Prefab Procedural Generation/Scripts/ProcGenSection.cs" Line="18" Column="12" />
+      <File FileName="Assets/Prefab Procedural Generation/Scripts/ProcGenRatios.cs" Line="6" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
