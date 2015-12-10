@@ -5,7 +5,7 @@ public class ProcGenSection : MonoBehaviour
 {
 
 	//This is the size of this current Section. It is how far it will be delayed.
-	public float generationOffset;
+	public float sizeOfSection;
 	
 	//This is whether or not the section will add after a certain amount of distance or will be added to the list after a certain amount of sections.
 	public bool delayedBySectionsNotDistance = true;
@@ -29,8 +29,8 @@ public class ProcGenSection : MonoBehaviour
 	
 	void InitialiseProcGenSection ()
 	{
-		if (generationOffset <= 0) {
-			Debug.LogError ("The offset is " + generationOffset 
+		if (sizeOfSection <= 0) {
+			Debug.LogError ("The offset is " + sizeOfSection 
 				+ "\n" + " This section will not add to the list of sections to generate");
 			//If it's offset is wrong, make it never get added to the list of things that can generate.
 			distanceUntilAdditionToList = Mathf.Infinity;
@@ -55,8 +55,10 @@ public class ProcGenSection : MonoBehaviour
 	void Update ()
 	{
 		//If the spawners distance that it was spawned at is 
-		if ((spawner.currentDistance - distanceSpawned) >= spawner.cleanupDistance) {
-			CleanUp ();
+		if (spawner != null) {
+			if ((spawner.currentDistance - distanceSpawned) >= spawner.cleanupDistance) {
+				CleanUp ();
+			}
 		}
 	}
 }

@@ -112,14 +112,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d11b322f3cf4094b886e5d977d71d1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listOfSections: []
+  direction: {x: 0, y: 1, z: 0}
+  listOfSections:
+  - section: {fileID: 11411100, guid: a009d2f10de3b43c3a424608c6b49314, type: 2}
+    ratio: 1
+  - section: {fileID: 11492460, guid: 18500b23d2f5240938e86461601c13a8, type: 2}
+    ratio: 1
   generatesInOrder: 0
-  maxConsecutiveSectionRepeats: 0
-  sectionsToAddDuringRuntime: []
-  hasTarget: 0
-  targetGameObject: {fileID: 0}
-  cleanupDistance: 0
-  startingSection: {fileID: 0}
+  generationSoftEdge: 10
+  maxConsecutiveSectionRepeats: 2
+  hasTarget: 1
+  targetGameObject: {fileID: 1571947013}
+  cleanupDistance: 50
+  startingSection: {fileID: 11411100, guid: a009d2f10de3b43c3a424608c6b49314, type: 2}
   hasEndOfGeneration: 0
   numSectionsToSpawn: 0
   finalSection: {fileID: 0}
@@ -130,7 +135,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 397048732}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.565402269, y: .297245234, z: .251594603}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -207,6 +212,7 @@ GameObject:
   - 92: {fileID: 1571947016}
   - 124: {fileID: 1571947015}
   - 81: {fileID: 1571947014}
+  - 114: {fileID: 1571947019}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -281,3 +287,15 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &1571947019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1571947013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9113cd019c9434ce982ead1ab3ab7f56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 10

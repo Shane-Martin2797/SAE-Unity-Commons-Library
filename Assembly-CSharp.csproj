@@ -54,9 +54,11 @@
      <Compile Include="Assets\Pooling\Scripts\PooledObject.cs" />
      <Compile Include="Assets\Pooling\Scripts\PoolingTypeI.cs" />
      <Compile Include="Assets\Pooling\Scripts\PoolingTypeII.cs" />
+     <Compile Include="Assets\Prefab Procedural Generation\Scripts\Move.cs" />
      <Compile Include="Assets\Prefab Procedural Generation\Scripts\ProcGenController.cs" />
      <Compile Include="Assets\Prefab Procedural Generation\Scripts\ProcGenRatios.cs" />
      <Compile Include="Assets\Prefab Procedural Generation\Scripts\ProcGenSection.cs" />
+     <Compile Include="Assets\Prefab Procedural Generation\Scripts\VectorAdditive.cs" />
      <Compile Include="Assets\Singletons\Scripts\SingletonBehaviour.cs" />
      <Compile Include="Assets\Singletons\Scripts\SingletonBehaviourII.cs" />
  <Reference Include="UnityEngine.UI">

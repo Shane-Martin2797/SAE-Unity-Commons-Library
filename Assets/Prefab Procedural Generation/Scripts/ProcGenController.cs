@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class ProcGenController : MonoBehaviour
 {
+	public static event System.Action<float> OnCurrentDistanceChange;
+	public static event System.Action<int> OnTotalIndexChange;
+	
 	//Direction that we want the random generation to spawn in.
 	public Vector3 direction = Vector3.up;
 	
@@ -14,10 +17,12 @@ public class ProcGenController : MonoBehaviour
 
 	//If true, generates sections in order, else, randomises outputs.
 	public bool generatesInOrder;
+	
+	public float generationSoftEdge;
 
 	//The number of times that a single section can be spawned in a row.
 	public int maxConsecutiveSectionRepeats;
-	private int currentRepeatNum;
+	private int currentRepeatNum = 1;
 
 	//public bool isPooled;
 
@@ -37,15 +42,88 @@ public class ProcGenController : MonoBehaviour
 	//The current and previously spawned sections
 	private int currentSectionIndex;
 	private int previousSectionIndex;
+	private ProcGenSection previousSection;
 	
 	//The current distance and the current amount of spawned sections
 	public float currentDistance { get; private set; }
 	public int currentTotalSectionsGenerated { get; private set; }
 
+	int whileLoopBreakAmount = 1000;
 
 	void Awake ()
 	{
 		InitialiseGenerator ();
+	}
+	
+	void OnEnable ()
+	{
+		ProcGenController.OnCurrentDistanceChange += HandleOnCurrentDistanceChange;
+		ProcGenController.OnTotalIndexChange += HandleOnTotalIndexChange;
+	}
+	
+	void Start ()
+	{
+		SpawnStartingSection ();
+	}
+
+	
+	void Update ()
+	{
+	
+		//Recording of distance
+		if (hasTarget) {
+			Vector3 pos = (transform.position + targetGameObject.transform.position);
+			float dist = VectorAdditive.Vector3Multiplication (pos, direction).magnitude;
+			if (dist > currentDistance) {
+				currentDistance = dist;
+				OnCurrentDistanceChange (currentDistance);
+			}
+		}
+		
+		//Generation
+		if (currentTotalSectionsGenerated <= numSectionsToSpawn || numSectionsToSpawn == 0) {
+			//Do spawning stuff in here.
+			if (hasTarget) {
+				float distOfTopOfGeneratedSection = ((previousSection.transform.position + (direction * previousSection.sizeOfSection / 2)).magnitude * direction).magnitude;
+				if (currentDistance > (distOfTopOfGeneratedSection - generationSoftEdge)) {
+					GenerateSection ();
+				}
+			}
+		}
+	}
+	
+	void OnDisable ()
+	{
+		ProcGenController.OnCurrentDistanceChange -= HandleOnCurrentDistanceChange;
+		ProcGenController.OnTotalIndexChange -= HandleOnTotalIndexChange;
+	}
+	
+	
+	/// <summary>
+	/// Spawns the starting section.
+	/// </summary>
+	void SpawnStartingSection ()
+	{
+		if (startingSection == null) {
+			return;
+		}
+		ProcGenSection generatedSection = Instantiate (startingSection) as ProcGenSection;
+		
+		generatedSection.transform.position = transform.position +
+			((generatedSection.sizeOfSection / 2) * direction);
+	
+		previousSection = generatedSection;
+		
+		currentTotalSectionsGenerated++;
+		OnTotalIndexChange (currentTotalSectionsGenerated);
+		
+		if (!hasTarget) {
+			Vector3 pos = generatedSection.transform.position + (generatedSection.sizeOfSection / 2 * direction);
+			currentDistance = VectorAdditive.Vector3Multiplication (pos, direction).magnitude;
+			OnCurrentDistanceChange (currentDistance);
+		}
+		generatedSection.SetSpawnObject (this);
+		
 	}
 	
 	/// <summary>
@@ -127,25 +205,106 @@ public class ProcGenController : MonoBehaviour
 	/// <returns>The section (int) to generate.</returns>
 	private int CalculateSectionToGenerate ()
 	{
-		float value = Random.value;
+		float value = Random.value; //Always between 0 and 1
 		int i = 0;
-		while (value > 0) {
+		bool whileStillChecking = true;
+		while (whileStillChecking) {
 			value -= listOfSections [i].ratio;
-			i++;
+			if (value <= 0) {
+				whileStillChecking = false;
+			} else {
+				i++;
+			}
 			if (i > listOfSections.Count) {
 				Debug.LogError ("Ran out of sections before finding the right section to generate");
-				return 0;
+				whileStillChecking = false;
 			}
 		}
-		//Now i is equal to the value of the section we want.
-		//If the i value is over the repeated amount then repick (Maybe just add 1 to i and % Count)? else return i;
 		
-		if (listOfSections.Count >= i) {
-			Debug.LogError ("The picked random number is larger than the size of List Of Sections"
+		if (i >= listOfSections.Count) {
+			Debug.LogWarning ("The picked random number is larger than the size of List Of Sections"
 				+ "\n" + "Modulating the random number for listOfSections.Count");
 			i = i % listOfSections.Count;
 		}
 		return i;
+	}
+	
+	private void GenerateSection ()
+	{
+		previousSectionIndex = currentSectionIndex;
+		int randomNumber = currentSectionIndex;
+		if (!generatesInOrder) {
+			if (maxConsecutiveSectionRepeats > 0) {
+				if (currentRepeatNum >= maxConsecutiveSectionRepeats) {
+					int i = 0;
+					while (randomNumber == currentSectionIndex) {
+						randomNumber = CalculateSectionToGenerate ();
+						i++;
+						if (i > whileLoopBreakAmount) {
+							Debug.LogError ("Change ratios or allow unlimited repeats, it iterated 1000 times and still didn't get the correct number.");
+							break;
+						}
+					}
+				} else {
+					//If we can still repeat this number, just pick a random number.
+					randomNumber = CalculateSectionToGenerate ();
+				}
+			} else {
+				//If we can repeat a section as many times as we want, just pick a number.
+				randomNumber = CalculateSectionToGenerate ();
+			}
+			
+			currentSectionIndex = randomNumber;
+		} else {
+			//If we don't pick randomly, then the next section is the next section.
+			currentSectionIndex = (currentSectionIndex + 1) % listOfSections.Count;
+		}
+		//Checks if the section is the same as the previous, if it is then it adds 1 to the current repeat times.
+		if (currentSectionIndex == previousSectionIndex) {
+			currentRepeatNum++;
+		} else {
+			//Otherwise, reset the repeat count.
+			currentRepeatNum = 1;
+		}
+		//Instantiates the object
+		
+		ProcGenSection generatedSection;
+		//if(!isPooled)
+		{
+			if (currentTotalSectionsGenerated == numSectionsToSpawn) {
+				generatedSection = Instantiate (finalSection) as ProcGenSection;
+			
+			} else {
+				generatedSection = Instantiate (listOfSections [currentSectionIndex].section) as ProcGenSection;
+			}
+		}
+			
+		//Since transform.position is the midpoint, we want the sizeOfSection / 2 * direction
+		generatedSection.transform.position = previousSection.transform.position +
+			(((previousSection.sizeOfSection / 2) + (generatedSection.sizeOfSection / 2)) * direction);
+		
+		previousSection = generatedSection;
+		
+		currentTotalSectionsGenerated++;
+		OnTotalIndexChange (currentTotalSectionsGenerated);
+		
+		if (!hasTarget) {
+			Vector3 pos = generatedSection.transform.position + (generatedSection.sizeOfSection / 2 * direction);
+			currentDistance = VectorAdditive.Vector3Multiplication (pos, direction).magnitude;
+			OnCurrentDistanceChange (currentDistance);
+		}
+		generatedSection.SetSpawnObject (this);
+		
+	}
+	
+	/// <summary>
+	/// This method should be called whenever the distance changes as multiple
+	/// scripts need to called when the distance changes.
+	/// </summary>
+	private void OnDistanceChange ()
+	{
+		AddSections ();
+		RemoveSections ();
 	}
 	
 	/// <summary>
@@ -159,6 +318,7 @@ public class ProcGenController : MonoBehaviour
 				sectionsToAdd.Add (listOfSections [i]);
 			}
 		}
+		InitialiseRatios ();
 	}
 	
 	/// <summary>
@@ -207,6 +367,17 @@ public class ProcGenController : MonoBehaviour
 			}
 		}
 	}
+	
+	void HandleOnTotalIndexChange (int obj)
+	{
+		OnDistanceChange ();
+	}
+	
+	void HandleOnCurrentDistanceChange (float obj)
+	{
+		OnDistanceChange ();
+	}
+	
 	
 	void Abort ()
 	{
