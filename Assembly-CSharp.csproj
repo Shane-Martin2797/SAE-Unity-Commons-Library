@@ -49,6 +49,7 @@
      <Compile Include="Assets\CSVReadWrite\Scripts\CSVReader.cs" />
      <Compile Include="Assets\FiniteStateMachine\Scripts\FSM.cs" />
      <Compile Include="Assets\FiniteStateMachine\Scripts\FSMState.cs" />
+     <Compile Include="Assets\MathsSharp\VectorAdditive.cs" />
      <Compile Include="Assets\Pooling\Scripts\Example\BulletExample.cs" />
      <Compile Include="Assets\Pooling\Scripts\Example\GunExample.cs" />
      <Compile Include="Assets\Pooling\Scripts\PooledObject.cs" />
@@ -58,7 +59,6 @@
      <Compile Include="Assets\Prefab Procedural Generation\Scripts\ProcGenController.cs" />
      <Compile Include="Assets\Prefab Procedural Generation\Scripts\ProcGenRatios.cs" />
      <Compile Include="Assets\Prefab Procedural Generation\Scripts\ProcGenSection.cs" />
-     <Compile Include="Assets\Prefab Procedural Generation\Scripts\VectorAdditive.cs" />
      <Compile Include="Assets\Singletons\Scripts\SingletonBehaviour.cs" />
      <Compile Include="Assets\Singletons\Scripts\SingletonBehaviourII.cs" />
  <Reference Include="UnityEngine.UI">
