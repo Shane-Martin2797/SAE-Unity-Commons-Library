@@ -4,9 +4,13 @@ using System.Collections.Generic;
 
 public class ProcGenController : MonoBehaviour
 {
+	//Direction that we want the random generation to spawn in.
+	public Vector3 direction = Vector3.up;
+	
 	//A list containing all of the level section variations.
-	public List<ProcGenRatios> listOfSections;
-	private List<ProcGenRatios> sectionsToAdd;
+	public List<ProcGenRatios> listOfSections = new List<ProcGenRatios> ();
+	private List<ProcGenRatios> sectionsToAdd = new List<ProcGenRatios> ();
+	private List<ProcGenRatios> removedSections = new List<ProcGenRatios> ();
 
 	//If true, generates sections in order, else, randomises outputs.
 	public bool generatesInOrder;
@@ -16,10 +20,6 @@ public class ProcGenController : MonoBehaviour
 	private int currentRepeatNum;
 
 	//public bool isPooled;
-
-	//The sections that will be added during runtime after certain conditions have been met.
-	//public List<GameObject> sectionsToAddDuringRuntime;
-	//No longer needed as we are going to move the add during runtime values to the proc gen section.
 
 	//If the cleanup of the sections is from the center of the screen, or relative to an object's location.
 	public bool hasTarget;
@@ -39,14 +39,26 @@ public class ProcGenController : MonoBehaviour
 	private int previousSectionIndex;
 	
 	//The current distance and the current amount of spawned sections
-	private float currentDistance;
-	private int currentTotalSectionsGenerated;
+	public float currentDistance { get; private set; }
+	public int currentTotalSectionsGenerated { get; private set; }
 
+
+	void Awake ()
+	{
+		InitialiseGenerator ();
+	}
+	
 	/// <summary>
 	/// Used to set up arrays and perform checks before procedural generation occurs
 	/// </summary>
 	private void InitialiseGenerator ()
 	{
+		direction.Normalize ();
+		if (direction == Vector3.zero) {
+			Debug.LogError ("Cannot generate in no direction, please change direction to a suitable value");
+			Abort ();
+			return;
+		}
 		//Checks if there are any sections within the list, if not, it logs an error.
 		if (listOfSections.Count <= 0) {
 			Debug.LogError ("No sections in the Procedural Generation section-list!");
@@ -85,12 +97,12 @@ public class ProcGenController : MonoBehaviour
 	
 		float total = 0;
 		for (int i = 0; i < listOfSections.Count; ++i) {
-			if (!sectionsToAdd.Contains (listOfSections [i])) {
+			if (!sectionsToAdd.Contains (listOfSections [i]) && !removedSections.Contains (listOfSections [i])) {
 				total += listOfSections [i].ratio;
 			}
 		}
 		for (int i = 0; i < listOfSections.Count; ++i) {
-			if (!sectionsToAdd.Contains (listOfSections [i])) {
+			if (!sectionsToAdd.Contains (listOfSections [i]) && !removedSections.Contains (listOfSections [i])) {
 				listOfSections [i].ratio = (listOfSections [i].ratio / total);
 			}
 		}
@@ -105,7 +117,7 @@ public class ProcGenController : MonoBehaviour
 		if (generatesInOrder) {
 			return numSectionsToSpawn % listOfSections.Count;
 		} else {
-			return 0;
+			return Random.Range (0, listOfSections.Count);
 		}
 	}
 	
@@ -117,7 +129,7 @@ public class ProcGenController : MonoBehaviour
 	{
 		float value = Random.value;
 		int i = 0;
-		while (value >= 0) {
+		while (value > 0) {
 			value -= listOfSections [i].ratio;
 			i++;
 			if (i > listOfSections.Count) {
@@ -129,7 +141,9 @@ public class ProcGenController : MonoBehaviour
 		//If the i value is over the repeated amount then repick (Maybe just add 1 to i and % Count)? else return i;
 		
 		if (listOfSections.Count >= i) {
-			Debug.LogError ("The picked random number is larger than the size of List Of Sections");
+			Debug.LogError ("The picked random number is larger than the size of List Of Sections"
+				+ "\n" + "Modulating i for listOfSections.Count");
+			i = i % listOfSections.Count;
 		}
 		return i;
 	}
@@ -141,7 +155,7 @@ public class ProcGenController : MonoBehaviour
 	private void InitialiseSections ()
 	{
 		for (int i = 0; i < listOfSections.Count; ++i) {
-			if (listOfSections [i].section.distanceToAddition > 0) {
+			if (listOfSections [i].section.distanceUntilAdditionToList > 0) {
 				sectionsToAdd.Add (listOfSections [i]);
 			}
 		}
@@ -155,16 +169,53 @@ public class ProcGenController : MonoBehaviour
 	{
 		for (int i = 0; i < sectionsToAdd.Count; ++i) {
 			if (sectionsToAdd [i].section.delayedBySectionsNotDistance) {
-				if (sectionsToAdd [i].section.distanceToAddition <= currentTotalSectionsGenerated) {
+				if (sectionsToAdd [i].section.distanceUntilAdditionToList <= currentTotalSectionsGenerated) {
 					sectionsToAdd.Remove (sectionsToAdd [i]);
 					InitialiseRatios ();
 				}
 			} else {
-				if (sectionsToAdd [i].section.distanceToAddition <= currentDistance) {
+				if (sectionsToAdd [i].section.distanceUntilAdditionToList <= currentDistance) {
 					sectionsToAdd.Remove (sectionsToAdd [i]);
 					InitialiseRatios ();
 				}
 			}
 		}
+	}
+	
+	/// <summary>
+	/// Removes the sections when they are required to be removed from the list.
+	/// This should run every time a section generates or the object moves in the appropriate direction
+	/// </summary>
+	private void RemoveSections ()
+	{
+		for (int i = 0; i < listOfSections.Count; ++i) {
+			//If it doesn't get removed, continue.
+			if (listOfSections [i].section.distanceUntilRemoveFromList <= 0) {
+				continue;
+			}
+			
+			if (listOfSections [i].section.delayedBySectionsNotDistance) {
+				if (listOfSections [i].section.distanceUntilRemoveFromList <= currentTotalSectionsGenerated) {
+					removedSections.Add (listOfSections [i]);
+					InitialiseRatios ();
+				}
+			} else {
+				if (listOfSections [i].section.distanceUntilRemoveFromList <= currentDistance) {
+					removedSections.Add (listOfSections [i]);
+					InitialiseRatios ();
+				}
+			}
+		}
+	}
+	
+	void Abort ()
+	{
+#if UNITY_EDITOR
+		Debug.LogError ("Exiting the Editor due to an error");
+		UnityEditor.EditorApplication.isPaused = true;
+		UnityEditor.EditorApplication.isPlaying = false;
+#else
+		Application.Quit();
+#endif
 	}
 }

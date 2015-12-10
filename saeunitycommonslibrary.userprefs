@@ -1,10 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Prefab Procedural Generation/Scripts/ProcGenController.cs">
     <Files>
-      <File FileName="Assets/Prefab Procedural Generation/Scripts/ProcGenController.cs" Line="129" Column="95" />
-      <File FileName="Assets/Prefab Procedural Generation/Scripts/ProcGenSection.cs" Line="18" Column="12" />
-      <File FileName="Assets/Prefab Procedural Generation/Scripts/ProcGenRatios.cs" Line="6" Column="3" />
+      <File FileName="Assets/Prefab Procedural Generation/Scripts/ProcGenController.cs" Line="72" Column="42" />
+      <File FileName="Assets/Prefab Procedural Generation/Scripts/ProcGenSection.cs" Line="34" Column="9" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

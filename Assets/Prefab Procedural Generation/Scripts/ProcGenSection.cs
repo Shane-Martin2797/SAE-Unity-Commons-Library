@@ -11,20 +11,52 @@ public class ProcGenSection : MonoBehaviour
 	public bool delayedBySectionsNotDistance = true;
 	
 	//This is the distance before it adds this section to the list.
-	public float distanceToAddition = 0;
+	public float distanceUntilAdditionToList = 0;
+	
+	//This is the distance before it removes this section from the list.
+	public float distanceUntilRemoveFromList;
+	
+	//
+	private ProcGenController spawner;
+	private float distanceSpawned;
 	
 
 	// Use this for initialization
 	void Awake ()
 	{
+		InitialiseProcGenSection ();
+	}
+	
+	void InitialiseProcGenSection ()
+	{
 		if (generationOffset <= 0) {
-			Debug.LogError ("The offset is " + generationOffset);
+			Debug.LogError ("The offset is " + generationOffset 
+				+ "\n" + " This section will not add to the list of sections to generate");
+			//If it's offset is wrong, make it never get added to the list of things that can generate.
+			distanceUntilAdditionToList = Mathf.Infinity;
+		}
+	}
+	
+	public void SetSpawnObject (ProcGenController spawn)
+	{
+		spawner = spawn;
+		distanceSpawned = spawn.currentDistance;
+	}
+	
+	void CleanUp ()
+	{
+		//if(!spawner.isPooled)
+		{
+			Destroy (this.gameObject);
 		}
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-	
+		//If the spawners distance that it was spawned at is 
+		if ((spawner.currentDistance - distanceSpawned) >= spawner.cleanupDistance) {
+			CleanUp ();
+		}
 	}
 }
