@@ -142,7 +142,7 @@ public class ProcGenController : MonoBehaviour
 		
 		if (listOfSections.Count >= i) {
 			Debug.LogError ("The picked random number is larger than the size of List Of Sections"
-				+ "\n" + "Modulating i for listOfSections.Count");
+				+ "\n" + "Modulating the random number for listOfSections.Count");
 			i = i % listOfSections.Count;
 		}
 		return i;
