@@ -29,7 +29,7 @@ public class ProcGenController : MonoBehaviour
 	//If the cleanup of the sections is from the center of the screen, or relative to an object's location.
 	public bool hasTarget;
 	public GameObject targetGameObject;
-	public float cleanupDistance;
+	public float cleanupDistance = 1;
 
 	//The prefab that will spawn at the start of the generation
 	public ProcGenSection startingSection;
@@ -90,7 +90,7 @@ public class ProcGenController : MonoBehaviour
 						GenerateSection ();
 					}
 				} else {
-					Debug.LogError ("Change the Cleanup Distance, It is destroying before the next generation happens");
+					Debug.LogError ("Change the Cleanup Distance, it is destroying before the next generation happens");
 					Abort ();
 				}
 			}
@@ -138,6 +138,10 @@ public class ProcGenController : MonoBehaviour
 	/// </summary>
 	private void InitialiseGenerator ()
 	{
+        if (generationSoftEdge >= cleanupDistance){
+            Debug.LogWarning("Having a generation soft edge that is greater than the cleanup may cause undesired results.");
+        }
+
 		direction.Normalize ();
 		if (direction == Vector3.zero) {
 			Debug.LogError ("Cannot generate in no direction, please change direction to a suitable value");
@@ -178,7 +182,6 @@ public class ProcGenController : MonoBehaviour
 	/// </summary>
 	private void InitialiseRatios ()
 	{
-	
 		//We could do this by using a 'Total' variable that just gets reset and it does this calculation
 		//in the calculate section to spawn script.
 	
@@ -245,7 +248,7 @@ public class ProcGenController : MonoBehaviour
 		if (!generatesInOrder) {
 			if (maxConsecutiveSectionRepeats > 0) {
 				if (currentRepeatNum >= maxConsecutiveSectionRepeats) {
-					int i = 0;
+					int i = 0;  //Used to safely break the loop
 					while (randomNumber == currentSectionIndex) {
 						randomNumber = CalculateSectionToGenerate ();
 						i++;
@@ -389,7 +392,7 @@ public class ProcGenController : MonoBehaviour
 	
 	void HandleOnCurrentDistanceChange (float obj)
 	{
-		OnDistanceChange ();
+        OnDistanceChange();
 	}
 	
 	
