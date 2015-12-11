@@ -119,11 +119,11 @@ MonoBehaviour:
   - section: {fileID: 11492460, guid: 18500b23d2f5240938e86461601c13a8, type: 2}
     ratio: 1
   generatesInOrder: 0
-  generationSoftEdge: 10
+  generationSoftEdge: 0
   maxConsecutiveSectionRepeats: 2
   hasTarget: 1
   targetGameObject: {fileID: 1571947013}
-  cleanupDistance: 50
+  cleanupDistance: 0
   startingSection: {fileID: 11411100, guid: a009d2f10de3b43c3a424608c6b49314, type: 2}
   hasEndOfGeneration: 0
   numSectionsToSpawn: 0

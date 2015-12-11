@@ -84,9 +84,14 @@ public class ProcGenController : MonoBehaviour
 		if (currentTotalSectionsGenerated <= numSectionsToSpawn || numSectionsToSpawn == 0) {
 			//Do spawning stuff in here.
 			if (hasTarget) {
-				float distOfTopOfGeneratedSection = ((previousSection.transform.position + (direction * previousSection.sizeOfSection / 2)).magnitude * direction).magnitude;
-				if (currentDistance > (distOfTopOfGeneratedSection - generationSoftEdge)) {
-					GenerateSection ();
+				if (previousSection != null) {
+					float distOfTopOfGeneratedSection = ((previousSection.transform.position + (direction * previousSection.sizeOfSection / 2)).magnitude * direction).magnitude;
+					if (currentDistance > (distOfTopOfGeneratedSection - generationSoftEdge)) {
+						GenerateSection ();
+					}
+				} else {
+					Debug.LogError ("Change the Cleanup Distance, It is destroying before the next generation happens");
+					Abort ();
 				}
 			}
 		}
@@ -140,8 +145,10 @@ public class ProcGenController : MonoBehaviour
 			return;
 		}
 		//Checks if there are any sections within the list, if not, it logs an error.
-		if (listOfSections.Count <= 0) {
+		if (listOfSections.Count == 0) {
 			Debug.LogError ("No sections in the Procedural Generation section-list!");
+			Abort ();
+			return;
 		}
 
 		//Checks if hasTarget is true, if so, checks if targetGameObject is null. If it is, it resets hasTarget to false.
@@ -156,7 +163,7 @@ public class ProcGenController : MonoBehaviour
 				Debug.LogWarning ("hasEndOfGeneration is true; however, Procedural Generation's numSectionsToSpawn <= 0. Setting hasEndOfGeneration to false.");
 			} else {
 				if (finalSection == null) {
-					Debug.LogWarning ("No finalSection specified, dynamically allocating. (unless random, then first section chosen)");
+					Debug.LogWarning ("No finalSection specified, dynamically allocating. (unless random, then random section chosen)");
 					finalSection = listOfSections [CalculateFinalSection ()].section;
 				}
 			}
@@ -390,8 +397,9 @@ public class ProcGenController : MonoBehaviour
 	{
 #if UNITY_EDITOR
 		Debug.LogError ("Exiting the Editor due to an error");
-		UnityEditor.EditorApplication.isPaused = true;
 		UnityEditor.EditorApplication.isPlaying = false;
+		
+		UnityEditor.EditorApplication.isPaused = true;
 #else
 		Application.Quit();
 #endif
