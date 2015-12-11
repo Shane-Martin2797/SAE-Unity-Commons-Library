@@ -21,7 +21,7 @@ public static class MathsSharp
 		                        _VectorNumerator.z / _VectorDenominator.z);
 		}
 
-        public static Vector3 Vector3Exponential (Vector3 _BaseVector, float _Power)
+        public static Vector3 Vector3Pow (Vector3 _BaseVector, float _Power)
         {
             return new Vector3 (Mathf.Pow(_BaseVector.x, _Power),
                                 Mathf.Pow(_BaseVector.y, _Power),
@@ -95,7 +95,48 @@ public static class MathsSharp
 
 	public static class MathfAddititve
 	{
-	
+
+        public const float PI = 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280f;
+
+
+        public static float DegToRad (float _Degrees)
+        {
+            return _Degrees * (PI / 180);
+        }
+        public static float DegToRad(float _Degrees, int _DecimalPlaces)
+        {
+            return RoundToNumDecimals(_Degrees * (PI / 180), _DecimalPlaces);
+        }
+
+        public static float RadToDeg(float _Radians)
+        {
+            return _Radians * (180 / PI);
+        }
+        public static float RadToDeg(float _Radians, int _DecimalPlaces)
+        {
+            return RoundToNumDecimals(_Radians * (180 / PI), _DecimalPlaces);
+        }
+
+
+        public static float RoundToNumDecimals (float _Number, int _NumPlaces)
+        {
+            float numScalar = Mathf.Pow(10, _NumPlaces);
+            return (Mathf.RoundToInt(_Number * numScalar)/numScalar);
+        }
+
+        public static float FloorToNumDecimals(float _Number, int _NumPlaces)
+        {
+            float numScalar = Mathf.Pow(10, _NumPlaces);
+            return (Mathf.FloorToInt(_Number * numScalar) / numScalar);
+        }
+
+        public static float CeilToNumDecimals(float _Number, int _NumPlaces)
+        {
+            float numScalar = Mathf.Pow(10, _NumPlaces);
+            return (Mathf.CeilToInt(_Number * numScalar) / numScalar);
+        }
+        
+
 		public static bool CompareValues (int _Value1, int _Value2, int _Difference)
 		{
 			return (Mathf.Abs (_Value1 - _Value2) <= _Difference);

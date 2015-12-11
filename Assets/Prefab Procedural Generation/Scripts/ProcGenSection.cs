@@ -21,13 +21,8 @@ public class ProcGenSection : MonoBehaviour
 	private float distanceSpawned;
 	
 
-	// Use this for initialization
-	void Awake ()
-	{
-		InitialiseProcGenSection ();
-	}
-	
-	void InitialiseProcGenSection ()
+
+	public void InitialiseProcGenSection ()
 	{
 		if (sizeOfSection <= 0) {
 			Debug.LogError ("The offset is " + sizeOfSection 

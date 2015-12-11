@@ -70,6 +70,8 @@ public class ProcGenController : MonoBehaviour
 	void Update ()
 	{
 	
+        
+
 		//Recording of distance
 		if (hasTarget) {
 			Vector3 pos = (transform.position + targetGameObject.transform.position);
@@ -330,10 +332,14 @@ public class ProcGenController : MonoBehaviour
 	/// </summary>
 	private void InitialiseSections ()
 	{
-		for (int i = 0; i < listOfSections.Count; ++i) {
-			if (listOfSections [i].section.distanceUntilAdditionToList > 0) {
-				sectionsToAdd.Add (listOfSections [i]);
-			}
+		for (int i = 0; i < listOfSections.Count; ++i) 
+        {
+            listOfSections[i].section.InitialiseProcGenSection();
+
+            if (listOfSections[i].section.distanceUntilAdditionToList > 0)
+            {
+                sectionsToAdd.Add(listOfSections[i]);
+            }
 		}
 		InitialiseRatios ();
 	}
