@@ -163,7 +163,13 @@ public class ProcGenController : MonoBehaviour
 			Debug.LogWarning ("hasTarget is true; however, Procedural Generation's target object is null. Setting hasTarget to false.");
 		}
 
-		if (hasEndOfGeneration) {
+        // If NumSections is above 0, change end generation bool to true
+        if (numSectionsToSpawn > 0)
+        {
+            hasEndOfGeneration = true;
+        }
+
+        if (hasEndOfGeneration) {
 			if (numSectionsToSpawn <= 0) {
 				hasEndOfGeneration = false;
 				Debug.LogWarning ("hasEndOfGeneration is true; however, Procedural Generation's numSectionsToSpawn <= 0. Setting hasEndOfGeneration to false.");
@@ -174,6 +180,11 @@ public class ProcGenController : MonoBehaviour
 				}
 			}
 		}
+
+       
+        
+
+
 		
 		InitialiseSections ();
 	}
