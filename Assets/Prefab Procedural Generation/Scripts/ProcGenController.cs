@@ -105,6 +105,8 @@ public class ProcGenController : MonoBehaviour
 	void SpawnStartingSection ()
 	{
 		if (startingSection == null) {
+			GenerateSection ();
+			Debug.Log ("Starting section was null, so it Generated a section instead.");
 			return;
 		}
 		ProcGenSection generatedSection = Instantiate (startingSection) as ProcGenSection;
@@ -278,11 +280,16 @@ public class ProcGenController : MonoBehaviour
 				generatedSection = Instantiate (listOfSections [currentSectionIndex].section) as ProcGenSection;
 			}
 		}
-			
-		//Since transform.position is the midpoint, we want the sizeOfSection / 2 * direction
-		generatedSection.transform.position = previousSection.transform.position +
-			(((previousSection.sizeOfSection / 2) + (generatedSection.sizeOfSection / 2)) * direction);
 		
+		if (previousSection != null) {
+			//Since transform.position is the midpoint, we want the sizeOfSection / 2 * direction
+			generatedSection.transform.position = previousSection.transform.position +
+				(((previousSection.sizeOfSection / 2) + (generatedSection.sizeOfSection / 2)) * direction);
+		} else {
+			generatedSection.transform.position = transform.position +
+				((generatedSection.sizeOfSection / 2) * direction);
+			Debug.LogWarning ("Previous seciton was null, if this was the first generation ignore this.");
+		}
 		previousSection = generatedSection;
 		
 		currentTotalSectionsGenerated++;
