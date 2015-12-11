@@ -73,25 +73,33 @@ public class ProcGenController : MonoBehaviour
         
 
 		//Recording of distance
-		if (hasTarget) {
+		if (hasTarget)
+		{
 			Vector3 pos = (transform.position + targetGameObject.transform.position);
 			float dist = MathsSharp.VectorAdditive.Vector3Multiplication (pos, direction).magnitude;
-			if (dist > currentDistance) {
+			if (dist > currentDistance)
+			{
 				currentDistance = dist;
 				OnCurrentDistanceChange (currentDistance);
 			}
 		}
 		
 		//Generation
-		if (currentTotalSectionsGenerated <= numSectionsToSpawn || numSectionsToSpawn == 0) {
+		if (currentTotalSectionsGenerated <= numSectionsToSpawn || numSectionsToSpawn == 0)
+		{
 			//Do spawning stuff in here.
-			if (hasTarget) {
-				if (previousSection != null) {
+			if (hasTarget)
+			{
+				if (previousSection != null)
+				{
 					float distOfTopOfGeneratedSection = ((previousSection.transform.position + (direction * previousSection.sizeOfSection / 2)).magnitude * direction).magnitude;
-					if (currentDistance > (distOfTopOfGeneratedSection - generationSoftEdge)) {
+					if (currentDistance > (distOfTopOfGeneratedSection - generationSoftEdge))
+					{
 						GenerateSection ();
 					}
-				} else {
+				}
+				else
+				{
 					Debug.LogError ("Change the Cleanup Distance, it is destroying before the next generation happens");
 					Abort ();
 				}
@@ -111,7 +119,8 @@ public class ProcGenController : MonoBehaviour
 	/// </summary>
 	void SpawnStartingSection ()
 	{
-		if (startingSection == null) {
+		if (startingSection == null)
+		{
 			GenerateSection ();
 			Debug.Log ("Starting section was null, so it Generated a section instead.");
 			return;
@@ -126,7 +135,8 @@ public class ProcGenController : MonoBehaviour
 		currentTotalSectionsGenerated++;
 		OnTotalIndexChange (currentTotalSectionsGenerated);
 		
-		if (!hasTarget) {
+		if (!hasTarget)
+		{
 			Vector3 pos = generatedSection.transform.position + (generatedSection.sizeOfSection / 2 * direction);
 			currentDistance = MathsSharp.VectorAdditive.Vector3Multiplication (pos, direction).magnitude;
 			OnCurrentDistanceChange (currentDistance);
@@ -140,41 +150,50 @@ public class ProcGenController : MonoBehaviour
 	/// </summary>
 	private void InitialiseGenerator ()
 	{
-        if (generationSoftEdge >= cleanupDistance){
-            Debug.LogWarning("Having a generation soft edge that is greater than the cleanup may cause undesired results.");
-        }
+		if (generationSoftEdge >= cleanupDistance)
+		{
+			Debug.LogWarning ("Having a generation soft edge that is greater than the cleanup may cause undesired results.");
+		}
 
 		direction.Normalize ();
-		if (direction == Vector3.zero) {
+		if (direction == Vector3.zero)
+		{
 			Debug.LogError ("Cannot generate in no direction, please change direction to a suitable value");
 			Abort ();
 			return;
 		}
 		//Checks if there are any sections within the list, if not, it logs an error.
-		if (listOfSections.Count == 0) {
+		if (listOfSections.Count == 0)
+		{
 			Debug.LogError ("No sections in the Procedural Generation section-list!");
 			Abort ();
 			return;
 		}
 
 		//Checks if hasTarget is true, if so, checks if targetGameObject is null. If it is, it resets hasTarget to false.
-		if (hasTarget && (targetGameObject == null)) {
+		if (hasTarget && (targetGameObject == null))
+		{
 			hasTarget = false;
 			Debug.LogWarning ("hasTarget is true; however, Procedural Generation's target object is null. Setting hasTarget to false.");
 		}
 
-        // If NumSections is above 0, change end generation bool to true
-        if (numSectionsToSpawn > 0)
-        {
-            hasEndOfGeneration = true;
-        }
+		// If NumSections is above 0, change end generation bool to true
+		if (numSectionsToSpawn > 0)
+		{
+			hasEndOfGeneration = true;
+		}
 
-        if (hasEndOfGeneration) {
-			if (numSectionsToSpawn <= 0) {
+		if (hasEndOfGeneration)
+		{
+			if (numSectionsToSpawn <= 0)
+			{
 				hasEndOfGeneration = false;
 				Debug.LogWarning ("hasEndOfGeneration is true; however, Procedural Generation's numSectionsToSpawn <= 0. Setting hasEndOfGeneration to false.");
-			} else {
-				if (finalSection == null) {
+			}
+			else
+			{
+				if (finalSection == null)
+				{
 					Debug.LogWarning ("No finalSection specified, dynamically allocating. (unless random, then random section chosen)");
 					finalSection = listOfSections [CalculateFinalSection ()].section;
 				}
@@ -199,13 +218,17 @@ public class ProcGenController : MonoBehaviour
 		//in the calculate section to spawn script.
 	
 		float total = 0;
-		for (int i = 0; i < listOfSections.Count; ++i) {
-			if (!sectionsToAdd.Contains (listOfSections [i]) && !removedSections.Contains (listOfSections [i])) {
+		for (int i = 0; i < listOfSections.Count; ++i)
+		{
+			if (!sectionsToAdd.Contains (listOfSections [i]) && !removedSections.Contains (listOfSections [i]))
+			{
 				total += listOfSections [i].ratio;
 			}
 		}
-		for (int i = 0; i < listOfSections.Count; ++i) {
-			if (!sectionsToAdd.Contains (listOfSections [i]) && !removedSections.Contains (listOfSections [i])) {
+		for (int i = 0; i < listOfSections.Count; ++i)
+		{
+			if (!sectionsToAdd.Contains (listOfSections [i]) && !removedSections.Contains (listOfSections [i]))
+			{
 				listOfSections [i].ratio = (listOfSections [i].ratio / total);
 			}
 		}
@@ -217,9 +240,12 @@ public class ProcGenController : MonoBehaviour
 	/// </summary>
 	private int CalculateFinalSection ()
 	{
-		if (generatesInOrder) {
+		if (generatesInOrder)
+		{
 			return numSectionsToSpawn % listOfSections.Count;
-		} else {
+		}
+		else
+		{
 			return Random.Range (0, listOfSections.Count);
 		}
 	}
@@ -233,20 +259,26 @@ public class ProcGenController : MonoBehaviour
 		float value = Random.value; //Always between 0 and 1
 		int i = 0;
 		bool whileStillChecking = true;
-		while (whileStillChecking) {
+		while (whileStillChecking)
+		{
 			value -= listOfSections [i].ratio;
-			if (value <= 0) {
+			if (value <= 0)
+			{
 				whileStillChecking = false;
-			} else {
+			}
+			else
+			{
 				i++;
 			}
-			if (i > listOfSections.Count) {
+			if (i > listOfSections.Count)
+			{
 				Debug.LogError ("Ran out of sections before finding the right section to generate");
 				whileStillChecking = false;
 			}
 		}
 		
-		if (i >= listOfSections.Count) {
+		if (i >= listOfSections.Count)
+		{
 			Debug.LogWarning ("The picked random number is larger than the size of List Of Sections"
 				+ "\n" + "Modulating the random number for listOfSections.Count");
 			i = i % listOfSections.Count;
@@ -258,36 +290,50 @@ public class ProcGenController : MonoBehaviour
 	{
 		previousSectionIndex = currentSectionIndex;
 		int randomNumber = currentSectionIndex;
-		if (!generatesInOrder) {
-			if (maxConsecutiveSectionRepeats > 0) {
-				if (currentRepeatNum >= maxConsecutiveSectionRepeats) {
+		if (!generatesInOrder)
+		{
+			if (maxConsecutiveSectionRepeats > 0)
+			{
+				if (currentRepeatNum >= maxConsecutiveSectionRepeats)
+				{
 					int i = 0;  //Used to safely break the loop
-					while (randomNumber == currentSectionIndex) {
+					while (randomNumber == currentSectionIndex)
+					{
 						randomNumber = CalculateSectionToGenerate ();
 						i++;
-						if (i > whileLoopBreakAmount) {
+						if (i > whileLoopBreakAmount)
+						{
 							Debug.LogError ("Change ratios or allow unlimited repeats, it iterated 1000 times and still didn't get the correct number.");
 							break;
 						}
 					}
-				} else {
+				}
+				else
+				{
 					//If we can still repeat this number, just pick a random number.
 					randomNumber = CalculateSectionToGenerate ();
 				}
-			} else {
+			}
+			else
+			{
 				//If we can repeat a section as many times as we want, just pick a number.
 				randomNumber = CalculateSectionToGenerate ();
 			}
 			
 			currentSectionIndex = randomNumber;
-		} else {
+		}
+		else
+		{
 			//If we don't pick randomly, then the next section is the next section.
 			currentSectionIndex = (currentSectionIndex + 1) % listOfSections.Count;
 		}
 		//Checks if the section is the same as the previous, if it is then it adds 1 to the current repeat times.
-		if (currentSectionIndex == previousSectionIndex) {
+		if (currentSectionIndex == previousSectionIndex)
+		{
 			currentRepeatNum++;
-		} else {
+		}
+		else
+		{
 			//Otherwise, reset the repeat count.
 			currentRepeatNum = 1;
 		}
@@ -296,19 +342,25 @@ public class ProcGenController : MonoBehaviour
 		ProcGenSection generatedSection;
 		//if(!isPooled)
 		{
-			if (currentTotalSectionsGenerated == numSectionsToSpawn) {
+			if (currentTotalSectionsGenerated == numSectionsToSpawn)
+			{
 				generatedSection = Instantiate (finalSection) as ProcGenSection;
 			
-			} else {
+			}
+			else
+			{
 				generatedSection = Instantiate (listOfSections [currentSectionIndex].section) as ProcGenSection;
 			}
 		}
 		
-		if (previousSection != null) {
+		if (previousSection != null)
+		{
 			//Since transform.position is the midpoint, we want the sizeOfSection / 2 * direction
 			generatedSection.transform.position = previousSection.transform.position +
 				(((previousSection.sizeOfSection / 2) + (generatedSection.sizeOfSection / 2)) * direction);
-		} else {
+		}
+		else
+		{
 			generatedSection.transform.position = transform.position +
 				((generatedSection.sizeOfSection / 2) * direction);
 			Debug.LogWarning ("Previous seciton was null, if this was the first generation ignore this.");
@@ -318,7 +370,8 @@ public class ProcGenController : MonoBehaviour
 		currentTotalSectionsGenerated++;
 		OnTotalIndexChange (currentTotalSectionsGenerated);
 		
-		if (!hasTarget) {
+		if (!hasTarget)
+		{
 			Vector3 pos = generatedSection.transform.position + (generatedSection.sizeOfSection / 2 * direction);
 			currentDistance = MathsSharp.VectorAdditive.Vector3Multiplication (pos, direction).magnitude;
 			OnCurrentDistanceChange (currentDistance);
@@ -343,14 +396,14 @@ public class ProcGenController : MonoBehaviour
 	/// </summary>
 	private void InitialiseSections ()
 	{
-		for (int i = 0; i < listOfSections.Count; ++i) 
-        {
-            listOfSections[i].section.InitialiseProcGenSection();
+		for (int i = 0; i < listOfSections.Count; ++i)
+		{
+			listOfSections [i].section.InitialiseProcGenSection ();
 
-            if (listOfSections[i].section.distanceUntilAdditionToList > 0)
-            {
-                sectionsToAdd.Add(listOfSections[i]);
-            }
+			if (listOfSections [i].section.distanceUntilAdditionToList > 0)
+			{
+				sectionsToAdd.Add (listOfSections [i]);
+			}
 		}
 		InitialiseRatios ();
 	}
@@ -361,14 +414,20 @@ public class ProcGenController : MonoBehaviour
 	/// </summary>
 	private void AddSections ()
 	{
-		for (int i = 0; i < sectionsToAdd.Count; ++i) {
-			if (sectionsToAdd [i].section.delayedBySectionsNotDistance) {
-				if (sectionsToAdd [i].section.distanceUntilAdditionToList <= currentTotalSectionsGenerated) {
+		for (int i = 0; i < sectionsToAdd.Count; ++i)
+		{
+			if (sectionsToAdd [i].section.delayedBySectionsNotDistance)
+			{
+				if (sectionsToAdd [i].section.distanceUntilAdditionToList <= currentTotalSectionsGenerated)
+				{
 					sectionsToAdd.Remove (sectionsToAdd [i]);
 					InitialiseRatios ();
 				}
-			} else {
-				if (sectionsToAdd [i].section.distanceUntilAdditionToList <= currentDistance) {
+			}
+			else
+			{
+				if (sectionsToAdd [i].section.distanceUntilAdditionToList <= currentDistance)
+				{
 					sectionsToAdd.Remove (sectionsToAdd [i]);
 					InitialiseRatios ();
 				}
@@ -382,19 +441,26 @@ public class ProcGenController : MonoBehaviour
 	/// </summary>
 	private void RemoveSections ()
 	{
-		for (int i = 0; i < listOfSections.Count; ++i) {
+		for (int i = 0; i < listOfSections.Count; ++i)
+		{
 			//If it doesn't get removed, continue.
-			if (listOfSections [i].section.distanceUntilRemoveFromList <= 0) {
+			if (listOfSections [i].section.distanceUntilRemoveFromList <= 0)
+			{
 				continue;
 			}
 			
-			if (listOfSections [i].section.delayedBySectionsNotDistance) {
-				if (listOfSections [i].section.distanceUntilRemoveFromList <= currentTotalSectionsGenerated) {
+			if (listOfSections [i].section.delayedBySectionsNotDistance)
+			{
+				if (listOfSections [i].section.distanceUntilRemoveFromList <= currentTotalSectionsGenerated)
+				{
 					removedSections.Add (listOfSections [i]);
 					InitialiseRatios ();
 				}
-			} else {
-				if (listOfSections [i].section.distanceUntilRemoveFromList <= currentDistance) {
+			}
+			else
+			{
+				if (listOfSections [i].section.distanceUntilRemoveFromList <= currentDistance)
+				{
 					removedSections.Add (listOfSections [i]);
 					InitialiseRatios ();
 				}
@@ -409,7 +475,7 @@ public class ProcGenController : MonoBehaviour
 	
 	void HandleOnCurrentDistanceChange (float obj)
 	{
-        OnDistanceChange();
+		OnDistanceChange ();
 	}
 	
 	

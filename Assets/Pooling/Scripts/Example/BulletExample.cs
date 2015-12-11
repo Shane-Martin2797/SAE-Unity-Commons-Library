@@ -26,10 +26,13 @@ public class BulletExample : PooledObject
 	void Update ()
 	{
 		transform.Translate (Vector3.forward * Time.deltaTime * speed);
-		if (lifetime <= 0) {
+		if (lifetime <= 0)
+		{
 			//Use ReturnObject instead of destroy
 			pool.ReturnObject (this);
-		} else {
+		}
+		else
+		{
 			lifetime -= Time.deltaTime;
 		}
 	}

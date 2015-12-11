@@ -24,7 +24,8 @@ public class ProcGenSection : MonoBehaviour
 
 	public void InitialiseProcGenSection ()
 	{
-		if (sizeOfSection <= 0) {
+		if (sizeOfSection <= 0)
+		{
 			Debug.LogError ("The offset is " + sizeOfSection 
 				+ "\n" + " This section will not add to the list of sections to generate");
 			//If it's offset is wrong, make it never get added to the list of things that can generate.
@@ -50,8 +51,10 @@ public class ProcGenSection : MonoBehaviour
 	void Update ()
 	{
 		//If the spawners distance that it was spawned at is 
-		if (spawner != null) {
-			if ((spawner.currentDistance - distanceSpawned) >= spawner.cleanupDistance) {
+		if (spawner != null)
+		{
+			if ((spawner.currentDistance - distanceSpawned) >= spawner.cleanupDistance)
+			{
 				CleanUp ();
 			}
 		}

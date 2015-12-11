@@ -19,36 +19,42 @@ public class GunExample : MonoBehaviour
 	
 	void Update ()
 	{
-		if (delayBeforeFiring <= 0) {
+		if (delayBeforeFiring <= 0)
+		{
 			timer -= Time.deltaTime;
-			if (timer <= 0) {
-				for (int i = 0; i < amountOfObjectsToFire; ++i) {
+			if (timer <= 0)
+			{
+				for (int i = 0; i < amountOfObjectsToFire; ++i)
+				{
 					Fire ();
 				}
 				timer = firerate;
 			}
-		} else {
-			switch (typeOfDelay) {
-			case TypeOfDelay.Seconds:
-				{
-					delayBeforeFiring -= Time.deltaTime;
-					break;
-				}
-			case TypeOfDelay.Update:
-				{
-					delayBeforeFiring--;
-					break;
-				}
-			case TypeOfDelay.Fires:
-				{
-					delayBeforeFiring -= (Time.deltaTime / firerate);
-					break;
-				}
-			default:
-				{
-					Debug.Log ("Pick a type");
-					break;
-				}
+		}
+		else
+		{
+			switch (typeOfDelay)
+			{
+				case TypeOfDelay.Seconds:
+					{
+						delayBeforeFiring -= Time.deltaTime;
+						break;
+					}
+				case TypeOfDelay.Update:
+					{
+						delayBeforeFiring--;
+						break;
+					}
+				case TypeOfDelay.Fires:
+					{
+						delayBeforeFiring -= (Time.deltaTime / firerate);
+						break;
+					}
+				default:
+					{
+						Debug.Log ("Pick a type");
+						break;
+					}
 			} 
 		}
 	}

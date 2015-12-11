@@ -18,7 +18,8 @@ public class CSVReader : SingletonBehaviourII<CSVReader>
 	
 	void Update ()
 	{
-		if (Input.anyKeyDown) {
+		if (Input.anyKeyDown)
+		{
 			Save ();
 		}
 	}
@@ -29,10 +30,12 @@ public class CSVReader : SingletonBehaviourII<CSVReader>
 	{
 		//This is to get all the lines
 		string[] lines = file.text.Split ("\n" [0]);
-		for (var i = 0; i < lines.Length; ++i) {
+		for (var i = 0; i < lines.Length; ++i)
+		{
 			//This is to get every thing that is comma separated
 			string[] parts = lines [i].Split ("," [0]);
-			for (int j = 0; j < parts.Length; ++j) {
+			for (int j = 0; j < parts.Length; ++j)
+			{
 				//Do something in here with the loop. It loops through everything
 				//That is saved in the CSV.
 				Debug.Log ("Line: " + i + " Part: " + j + " Says " + parts [j]);
@@ -52,7 +55,8 @@ public class CSVReader : SingletonBehaviourII<CSVReader>
 		StreamWriter writer = new StreamWriter (filePath);
 		
 		//This writes in a for loop.
-		for (int i = 0; i < 10; ++i) {
+		for (int i = 0; i < 10; ++i)
+		{
 			writer.WriteLine ("Hello" + "," + "This" + "," + "is" + "," + "Line" + (i + 1));
 		}
 		

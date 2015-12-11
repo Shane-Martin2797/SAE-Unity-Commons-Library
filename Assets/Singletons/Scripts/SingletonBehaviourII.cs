@@ -21,9 +21,12 @@ public class SingletonBehaviourII<T> : MonoBehaviour
 	public static T Instance { get; private set; }
 	void Awake ()
 	{
-		if (Instance == null) {
+		if (Instance == null)
+		{
 			Instance = this as T;
-		} else {
+		}
+		else
+		{
 			Destroy (gameObject);
 		}
 		OnSingletonAwake ();
@@ -31,7 +34,8 @@ public class SingletonBehaviourII<T> : MonoBehaviour
 		
 	void OnDestroy ()
 	{
-		if (Instance == this) {
+		if (Instance == this)
+		{
 			Instance = null;
 		}
 		OnSingletonDestroy ();

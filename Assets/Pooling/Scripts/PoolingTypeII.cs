@@ -11,7 +11,8 @@ public class PoolingTypeII : MonoBehaviour
 	
 	void PopulatePool ()
 	{
-		for (int i = 0; i < poolSize; i++) {
+		for (int i = 0; i < poolSize; i++)
+		{
 			BuildPool ();
 		}
 	}
@@ -38,10 +39,13 @@ public class PoolingTypeII : MonoBehaviour
 	public PooledObject GetPooledObject ()
 	{
 		PooledObject poolObject;
-		if (inactiveObjects.Count == 0) {
+		if (inactiveObjects.Count == 0)
+		{
 			Debug.LogWarning (pooledObject.name + " Pool too small");
 			poolObject = BuildPool ();
-		} else {
+		}
+		else
+		{
 			poolObject = inactiveObjects [0];
 		}
 		poolObject.gameObject.SetActive (true);

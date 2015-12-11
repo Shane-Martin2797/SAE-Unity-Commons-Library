@@ -26,7 +26,7 @@ public class AStarPathfinding : MonoBehaviour
 	/// This is whether or not they wish to have diagonal movement in their game.
 	/// If they have diagonal movement then it may go through walls in an arrangement like this:
 	/// | |
-	///    | |
+	///    | | 
 	/// As pathfinding doesn't currently detect whether it has to go through a wall.
 	/// </summary>
 	public bool allowDiagonalMovement;
@@ -56,16 +56,21 @@ public class AStarPathfinding : MonoBehaviour
 		public int fCost;
 		public int gScore;
 		public int hScore;
+
 		public NodeClass (Vector2 _gridPosition)
 		{
 			gridPosition = _gridPosition;
 		}
+
 		public void CalculateFCost ()
 		{
-			if (parent != null) {
+			if (parent != null)
+			{
 				//G Cost (Use absolutes to get +ve Answers)
 				gScore = Mathf.RoundToInt (Mathf.Abs (Mathf.Abs (gridPosition.x - parent.gridPosition.x) + Mathf.Abs (gridPosition.y - parent.gridPosition.y))) + parent.gScore;
-			} else {
+			}
+			else
+			{
 				//If there is no parent then it is the starting position
 				//Starting positions always have a g score of zero
 				gScore = 0;
@@ -79,10 +84,12 @@ public class AStarPathfinding : MonoBehaviour
 
 	void Update ()
 	{
-		if (findingPath) {
+		if (findingPath)
+		{
 			findPath ();
 		}
 	}
+
 	void findPath ()
 	{
 		findWaypoints ();
@@ -104,27 +111,36 @@ public class AStarPathfinding : MonoBehaviour
 //			initialNode = findStartPos ();
 //		}
 	}
+
 	void findWaypoints ()
 	{
 		initialNode = findStartPos ();
-		if (initialNode != null) {
+		if (initialNode != null)
+		{
 			initialNode.CalculateFCost ();
 			assignParents (initialNode);
 			addToClosed (initialNode);
-		} else {
+		}
+		else
+		{
 			Debug.LogError ("Initial Node is null");
 		}
 		bool continueWhileLoop = true;
-		while (((!closedList.Contains(endNode) && endNode != null) && continueWhileLoop) && openList.Count != 0) {
+		while (((!closedList.Contains(endNode) && endNode != null) && continueWhileLoop) && openList.Count != 0)
+		{
 			NodeClass node = findLowestFCost ();
-			if (node != null) {
+			if (node != null)
+			{
 				addToClosed (node);
-				if (node.parent == null) {
+				if (node.parent == null)
+				{
 					Debug.LogWarning ("Node " + node + " at position " + node.gridPosition + " Has no parent");
 				}
 				//compareGScore(node);
 				assignParents (node);
-			} else {
+			}
+			else
+			{
 				continueWhileLoop = false;
 				Debug.LogWarning ("Something went wrong, the node is null");
 			}
@@ -132,16 +148,21 @@ public class AStarPathfinding : MonoBehaviour
 		bool continueWhileLoop2 = true;
 		NodeClass prevNode = endNode;
 		pathTakingNodes.Add (endNode);
-		while (!pathTakingNodes.Contains(initialNode) && continueWhileLoop2) {
-			if (prevNode.parent != null) {
+		while (!pathTakingNodes.Contains(initialNode) && continueWhileLoop2)
+		{
+			if (prevNode.parent != null)
+			{
 				pathTakingNodes.Add (prevNode.parent);
 				prevNode = prevNode.parent;
-			} else {
+			}
+			else
+			{
 				Debug.LogWarning ("Ran out of Parents before reaching beggining");
 				continueWhileLoop2 = false;
 			}
 		} 
-		if (!pathTakingNodes.Contains (initialNode) || !pathTakingNodes.Contains (endNode)) {
+		if (!pathTakingNodes.Contains (initialNode) || !pathTakingNodes.Contains (endNode))
+		{
 			Debug.LogWarning ("There was no path");
 		}
 	}
@@ -164,25 +185,32 @@ public class AStarPathfinding : MonoBehaviour
 	
 	void addToClosed (NodeClass node)
 	{
-		if (openList.Contains (node)) {
+		if (openList.Contains (node))
+		{
 			openList.Remove (node);
 		}
-		if (!closedList.Contains (node)) {
+		if (!closedList.Contains (node))
+		{
 			closedList.Add (node);
 		}
 	}
+
 	void addToOpen (NodeClass node)
 	{
-		if (!openList.Contains (node) && !closedList.Contains (node)) {
+		if (!openList.Contains (node) && !closedList.Contains (node))
+		{
 			openList.Add (node);
 		}
 	}
+
 	void addToOpenOverride (NodeClass node)
 	{
-		if (closedList.Contains (node)) {
+		if (closedList.Contains (node))
+		{
 			closedList.Remove (node);
 		}
-		if (!openList.Contains (node)) {
+		if (!openList.Contains (node))
+		{
 			openList.Add (node);
 		}
 	}
@@ -200,13 +228,14 @@ public class AStarPathfinding : MonoBehaviour
 //		}
 		return null;
 	}
-
 	
 	void assignParents (NodeClass node)
 	{
-		for (int i = 0; i < allNodes.Count; ++i) {
+		for (int i = 0; i < allNodes.Count; ++i)
+		{
 			float difference = Vector2.Distance (node.gridPosition, allNodes [i].gridPosition);
-			if (allowDiagonalMovement) {
+			if (allowDiagonalMovement)
+			{
 				//Since the difference (due to using grid positions) can only be either a factor 1 or sqrt2, this means that
 				//Flooring the value will allow for using the diagonal values. Since the Left/Right/Up/Down values will
 				//be 1, and the diagonal values will be sqrt 2. 
@@ -215,8 +244,10 @@ public class AStarPathfinding : MonoBehaviour
 				difference = Mathf.Floor (difference);
 			}
 			if (node != allNodes [i] && !(closedList.Contains (allNodes [i])))
-			if (difference <= 1) {
-				if (allNodes [i].parent == null) {
+			if (difference <= 1)
+			{
+				if (allNodes [i].parent == null)
+				{
 					allNodes [i].parent = node;
 					allNodes [i].CalculateFCost ();
 				}
@@ -262,15 +293,19 @@ public class AStarPathfinding : MonoBehaviour
 //		}
 //		findingPath = true;
 	}
+
 	void resetLists (NodeClass node)
 	{
-		if (openList.Contains (node)) {
+		if (openList.Contains (node))
+		{
 			openList.Remove (node);
 		} 
-		if (closedList.Contains (node)) {
+		if (closedList.Contains (node))
+		{
 			closedList.Remove (node);
 		}
-		if (pathTakingNodes.Contains (node)) {
+		if (pathTakingNodes.Contains (node))
+		{
 			pathTakingNodes.Remove (node);
 		}
 		node.parent = null;
@@ -279,10 +314,14 @@ public class AStarPathfinding : MonoBehaviour
 	NodeClass findLowestFCost ()
 	{
 		NodeClass node = null;
-		for (int i = 0; i < openList.Count; ++i) {
-			if (node == null) {
+		for (int i = 0; i < openList.Count; ++i)
+		{
+			if (node == null)
+			{
 				node = openList [i];
-			} else if (openList [i].fCost < node.fCost) {
+			}
+			else if (openList [i].fCost < node.fCost)
+			{
 				node = openList [i];
 			}
 		}
@@ -293,9 +332,11 @@ public class AStarPathfinding : MonoBehaviour
 	public void setRenderer ()
 	{
 		LineRenderer lineRenderer = GetComponent<LineRenderer> ();
-		if (lineRenderer != null) {
+		if (lineRenderer != null)
+		{
 			lineRenderer.SetVertexCount (pathTakingNodes.Count);
-			for (int i = 0; i < pathTakingNodes.Count; ++i) {
+			for (int i = 0; i < pathTakingNodes.Count; ++i)
+			{
 				//lineRenderer.SetPosition (i, pathTakingNodes [i].gridPosition * worldGen.nodeSize);
 			}
 		}
