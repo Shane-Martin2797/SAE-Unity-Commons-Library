@@ -49,7 +49,7 @@
      <Compile Include="Assets\CSVReadWrite\Scripts\CSVReader.cs" />
      <Compile Include="Assets\FiniteStateMachine\Scripts\FSM.cs" />
      <Compile Include="Assets\FiniteStateMachine\Scripts\FSMState.cs" />
-     <Compile Include="Assets\MathsSharp\VectorAdditive.cs" />
+     <Compile Include="Assets\MathsSharp\MathsSharp.cs" />
      <Compile Include="Assets\Pooling\Scripts\Example\BulletExample.cs" />
      <Compile Include="Assets\Pooling\Scripts\Example\GunExample.cs" />
      <Compile Include="Assets\Pooling\Scripts\PooledObject.cs" />
@@ -61,17 +61,11 @@
      <Compile Include="Assets\Prefab Procedural Generation\Scripts\ProcGenSection.cs" />
      <Compile Include="Assets\Singletons\Scripts\SingletonBehaviour.cs" />
      <Compile Include="Assets\Singletons\Scripts\SingletonBehaviourII.cs" />
- <Reference Include="UnityEngine.Advertisements">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Analytics">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

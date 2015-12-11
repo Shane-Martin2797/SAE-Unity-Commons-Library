@@ -73,7 +73,7 @@ public class ProcGenController : MonoBehaviour
 		//Recording of distance
 		if (hasTarget) {
 			Vector3 pos = (transform.position + targetGameObject.transform.position);
-			float dist = VectorAdditive.Vector3Multiplication (pos, direction).magnitude;
+			float dist = MathsSharp.VectorAdditive.Vector3Multiplication (pos, direction).magnitude;
 			if (dist > currentDistance) {
 				currentDistance = dist;
 				OnCurrentDistanceChange (currentDistance);
@@ -126,7 +126,7 @@ public class ProcGenController : MonoBehaviour
 		
 		if (!hasTarget) {
 			Vector3 pos = generatedSection.transform.position + (generatedSection.sizeOfSection / 2 * direction);
-			currentDistance = VectorAdditive.Vector3Multiplication (pos, direction).magnitude;
+			currentDistance = MathsSharp.VectorAdditive.Vector3Multiplication (pos, direction).magnitude;
 			OnCurrentDistanceChange (currentDistance);
 		}
 		generatedSection.SetSpawnObject (this);
@@ -304,7 +304,7 @@ public class ProcGenController : MonoBehaviour
 		
 		if (!hasTarget) {
 			Vector3 pos = generatedSection.transform.position + (generatedSection.sizeOfSection / 2 * direction);
-			currentDistance = VectorAdditive.Vector3Multiplication (pos, direction).magnitude;
+			currentDistance = MathsSharp.VectorAdditive.Vector3Multiplication (pos, direction).magnitude;
 			OnCurrentDistanceChange (currentDistance);
 		}
 		generatedSection.SetSpawnObject (this);
