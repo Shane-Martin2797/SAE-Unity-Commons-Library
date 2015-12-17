@@ -7,36 +7,41 @@
 /// 
 /// As a note, this is made as MonoBehaviour because we need Coroutines.
 /// </summary>
-public class SingletonBehaviour<T> : MonoBehaviour 
+public class Singleton<T> : MonoBehaviour
 	where T : MonoBehaviour
 {
-	public static bool IsPersistent = false;    
+	public static bool IsPersistent = false;
 	
 	private static T _instance;
 	private static bool _applicationIsQuitting = false;    
 	private static object _lock = new object ();
 	
-	public static T Instance {
-		get {
+	public static T Instance
+	{
+		get
+		{
 			if (_applicationIsQuitting)
 				return null;
 			
-			lock (_lock) {
-				if (_instance == null) {
-					_instance = FindObjectOfType (typeof(T)) as T;
+			lock (_lock)
+			{
+				if (_instance == null)
+				{
+					_instance = FindObjectOfType (typeof (T)) as T;
 					
-					if (FindObjectsOfType (typeof(T)).Length > 1)
+					if (FindObjectsOfType (typeof (T)).Length > 1)
 						return _instance;
 					
-					if (_instance == null) {
+					if (_instance == null)
+					{
 						GameObject singleton = new GameObject ();
 						_instance = singleton.AddComponent<T> ();
-						singleton.name = "[SINGLETON] " + typeof(T).ToString ();
-						
-						if (IsPersistent)
-							DontDestroyOnLoad (singleton);
+						singleton.name = "[SINGLETON] " + typeof (T).ToString ();
 					}
 				}
+				
+				if (IsPersistent)
+					DontDestroyOnLoad (_instance.gameObject);
 				
 				return _instance;
 			}
