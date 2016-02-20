@@ -409,13 +409,13 @@ public static class EditorSharp
 				for (int i = 0; i < list.arraySize; i++)
 				{
 					SerializedProperty MyListRef = list.GetArrayElementAtIndex (i);
+					EditorGUILayout.PropertyField (MyListRef);
 					
 					switch (typeOfList)
 					{
 						case(GenRatio):
 							SerializedProperty MyRatio = MyListRef.FindPropertyRelative ("ratio");
 							SerializedProperty MySection = MyListRef.FindPropertyRelative ("section");
-							EditorGUILayout.PropertyField (MyListRef);
 						
 							if (MyListRef.isExpanded)
 							{
@@ -428,7 +428,6 @@ public static class EditorSharp
 							SerializedProperty point = MyListRef.FindPropertyRelative ("location");
 							SerializedProperty offset = MyListRef.FindPropertyRelative ("offset");						
 							SerializedProperty aval = MyListRef.FindPropertyRelative ("available");						
-							EditorGUILayout.PropertyField (MyListRef);
 						
 							if (MyListRef.isExpanded)
 							{
@@ -438,7 +437,6 @@ public static class EditorSharp
 							}					
 							break;
 						default:
-							EditorGUILayout.PropertyField (list.GetArrayElementAtIndex (i));
 							break;
 					}
 				}
