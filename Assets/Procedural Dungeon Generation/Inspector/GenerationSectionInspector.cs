@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(GenerationSection))]
+[CustomEditor(typeof (GenerationSection))]
 public class GenerationSectionInspector : Editor
 {
 
@@ -12,12 +12,13 @@ public class GenerationSectionInspector : Editor
 	void OnEnable ()
 	{
 		val = serializedObject.FindProperty ("AllEntries");
-		
 	}
 	
 	public override void OnInspectorGUI ()
 	{
 		serializedObject.Update ();
+		
+		
 		
 		EditorSharp.ShowList (val, EditorSharp.Doors);
 		

@@ -47,6 +47,7 @@ public class GenerationSection : MonoBehaviour
 	void Awake ()
 	{
 		index = int.MaxValue;
+		
 	}
 
 	void Start ()

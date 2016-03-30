@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(GenerationController))]
+[CustomEditor(typeof (GenerationController))]
 public class GenerationControllerInspector : Editor
 {
 
@@ -22,7 +22,7 @@ public class GenerationControllerInspector : Editor
 	{
 		serializedObject.Update ();
 		
-		
+		EditorGUILayout.PropertyField (serializedObject.FindProperty ("startSection"));
 		
 		EditorGUILayout.Separator ();
 		EditorGUILayout.HelpBox ("Distance between prefab and object before it disables", MessageType.None);
@@ -30,14 +30,16 @@ public class GenerationControllerInspector : Editor
 		EditorGUILayout.Separator ();
 		
 		hasTarg.boolValue = EditorGUILayout.Toggle ("Target GameObject", hasTarg.boolValue);
-		if (hasTarg.boolValue) {
+		if (hasTarg.boolValue)
+		{
 			EditorGUI.indentLevel++;
 			EditorGUILayout.PropertyField (serializedObject.FindProperty ("target"));
 			EditorGUI.indentLevel--;
 		}
 		
 		limitRepeats.boolValue = EditorGUILayout.ToggleLeft ("Minimise Consecutive Repeats", limitRepeats.boolValue);
-		if (limitRepeats.boolValue) {
+		if (limitRepeats.boolValue)
+		{
 			consecutiveRepeats.intValue = EditorGUILayout.IntSlider ("Maximum Consecutive Repeats", consecutiveRepeats.intValue, 0, 10);
 		}
 		

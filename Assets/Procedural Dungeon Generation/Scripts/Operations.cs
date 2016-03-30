@@ -416,10 +416,18 @@ public static class EditorSharp
 						case(GenRatio):
 							SerializedProperty MyRatio = MyListRef.FindPropertyRelative ("ratio");
 							SerializedProperty MySection = MyListRef.FindPropertyRelative ("section");
+							SerializedProperty rep = MyListRef.FindPropertyRelative ("consecutiveRepeats");
+							SerializedProperty igRep = MyListRef.FindPropertyRelative ("ignoreRepeats");
+							
 						
 							if (MyListRef.isExpanded)
 							{
-								EditorGUILayout.PropertyField (MySection);	
+								EditorGUILayout.PropertyField (MySection);
+								{
+									EditorGUI.indentLevel++;
+									igRep.boolValue = EditorGUILayout.Toggle ("Ignore Repeats", igRep.boolValue);
+									EditorGUI.indentLevel--;
+								}
 								EditorGUILayout.PropertyField (MyRatio);
 							}
 							break;
@@ -468,6 +476,7 @@ public static class EditorSharp
 public class GenRatios
 {
 	public GenerationSection section;
+	public bool ignoreRepeats = false;
 	public float ratio;
 }
 

@@ -15,6 +15,8 @@ public class GenerationController : MonoBehaviour
 	public const int MinNumberOfDoors = 5;
 	public GenRatios[] sectionPrefabs;
 	
+	public GenerationSection startSection;
+	
 	public float generationSoftEdge;
 	public GameObject target;
 	public bool hasTarget;
@@ -292,10 +294,17 @@ public class GenerationController : MonoBehaviour
 				//Otherwise, reset the repeat count.
 				repetitions = 1;
 			}
-			
+			GenerationSection generatedSection;
 			//Instantiates the object
-			GenerationSection generatedSection = Instantiate (sectionPrefabs [currentIndex].section) as GenerationSection;
-		
+			if (prevSection == null && totalPrefabsSpawned == 0 && startSection != null)
+			{
+				generatedSection = Instantiate (startSection) as GenerationSection;
+			}
+			else
+			{
+				generatedSection = Instantiate (sectionPrefabs [currentIndex].section) as GenerationSection;
+			}
+			totalPrefabsSpawned++;
 			generatedSection.parent = this;
 		
 			int doorInt = Operations.GetPreviousSectionIndex (prevSection, generatedSection);
@@ -337,7 +346,7 @@ public class GenerationController : MonoBehaviour
 		
 		if (maxConsecutiveRepeats > 0)
 		{
-			if (repetitions >= maxConsecutiveRepeats)
+			if (repetitions >= maxConsecutiveRepeats && (!sectionPrefabs [currentIndex].ignoreRepeats))
 			{
 				int i = 0;  //Used to safely break the loop
 				while (randomNumber == currentIndex)
